@@ -157,12 +157,12 @@ extension EditorSession {
         guard canPaste, let document else { return }
         let pasteboard = Self.pasteboard
         if let clip = pixelClipboard, pasteboard.changeCount == clip.changeCount {
-            addPixelLayer(clip.image, at: clip.origin, name: nextLayerName(), editName: "Paste")
+            addPixelLayer(clip.image, at: clip.origin, name: nextLayerName(), editName: L10n.text("Paste"))
         } else if let external = NSImage(pasteboard: pasteboard)?.cgImage(forProposedRect: nil, context: nil, hints: nil),
                   let image = try? Self.sRGBCopy(of: external) {
             let origin = CGPoint(x: floor((document.size.width - CGFloat(image.width)) / 2),
                                  y: floor((document.size.height - CGFloat(image.height)) / 2))
-            addPixelLayer(image, at: origin, name: nextLayerName(), editName: "Paste")
+            addPixelLayer(image, at: origin, name: nextLayerName(), editName: L10n.text("Paste"))
         } else { NSSound.beep() }
     }
 
@@ -185,7 +185,7 @@ extension EditorSession {
         guard let type = pasteboard.availableType(from: [.png, .tiff]), let data = pasteboard.data(forType: type) else { return }
         let folder = FileManager.default.temporaryDirectory.appendingPathComponent(UUID().uuidString, isDirectory: true)
         defer { try? FileManager.default.removeItem(at: folder) }
-        let file = folder.appendingPathComponent("Pasted Image").appendingPathExtension(type == .png ? "png" : "tiff")
+        let file = folder.appendingPathComponent(L10n.text("Pasted Image")).appendingPathExtension(type == .png ? "png" : "tiff")
         do {
             try FileManager.default.createDirectory(at: folder, withIntermediateDirectories: true)
             try data.write(to: file)
@@ -210,7 +210,7 @@ extension EditorSession {
         guard !layer.isGroup else { return }
         do {
             guard let copied = try renderSelectedPixels(from: layer, mask: isMaskSelected) else { NSSound.beep(); return }
-            addPixelLayer(copied.image, at: copied.region.origin, name: nextLayerName(), editName: "Layer via Copy")
+            addPixelLayer(copied.image, at: copied.region.origin, name: nextLayerName(), editName: L10n.text("Layer via Copy"))
         } catch { brushError = error.localizedDescription }
     }
 
@@ -229,7 +229,7 @@ extension EditorSession {
     /// A copy of each layer (a folder with all it holds), as one undo step: Duplicate Layer, and Paste of layers Copy
     /// took whole. One copy sits just above its original; several stack together, in their order, above the topmost
     /// original, as Photoshop's do. The copies end up selected.
-    func duplicateLayers(_ ids: [UUID], editName: String = "Duplicate Layer") {
+    func duplicateLayers(_ ids: [UUID], editName: String = L10n.text("Duplicate Layer")) {
         guard canEditLayers, !ids.isEmpty else { return }
         let active = activeLayerID
         beginEdit(editName)
@@ -283,7 +283,7 @@ extension EditorSession {
     func duplicateLayer(_ id: UUID, in parent: UUID?, above target: UUID? = nil, atBottom: Bool = false) -> Bool {
         guard canEditLayers,
               canPlaceLayer(id, in: parent) else { return false }
-        beginEdit("Duplicate Layer")
+        beginEdit(L10n.text("Duplicate Layer"))
         defer { endEdit() }
         selectLayer(id)
         duplicateActiveLayer()
@@ -312,8 +312,8 @@ extension EditorSession {
     func nextLayerName() -> String {
         let names = Set(document?.layers.map(\.name) ?? [])
         var number = 1
-        while names.contains("Layer \(number)") { number += 1 }
-        return "Layer \(number)"
+        while names.contains(L10n.text("Layer %@", String(describing: number))) { number += 1 }
+        return L10n.text("Layer %@", String(describing: number))
     }
 
     /// Normalizes an image from another app to the working sRGB RGBA format.

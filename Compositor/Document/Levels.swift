@@ -220,15 +220,15 @@ extension EditorSession {
                     let result = try DeepLayer.run(deep) { half in
                         try LevelsFilter.run(LevelsJob(image: half, settings: job.settings, selection: job.selection, mapping: job.mapping))
                     }
-                    return try DeepLayer.asset(result, name: "Levels")
+                    return try DeepLayer.asset(result, name: L10n.text("Levels"))
                 }
                 let image = try LevelsFilter.run(job)
-                return ImportedImage(image: image, thumbnail: try PixelAdjust.thumbnail(of: image), name: "Levels")
+                return ImportedImage(image: image, thumbnail: try PixelAdjust.thumbnail(of: image), name: L10n.text("Levels"))
             }.value
             guard let index = document?.layers.firstIndex(where: { $0.id == edit.layerID }),
                   let current = document?.layers[index], current.asset?.image === edit.original.image,
                   current.transform == edit.transform else { return }
-            beginEdit("Levels")
+            beginEdit(L10n.text("Levels"))
             document?.layers[index] = ImageLayer(id: current.id, asset: asset, name: current.name, isVisible: current.isVisible,
                 transform: current.transform, parentID: current.parentID, isGroup: false,
                 opacity: current.opacity, blendMode: current.blendMode, mask: current.mask, maskSourceID: current.maskSourceID,

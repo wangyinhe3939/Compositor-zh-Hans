@@ -10,7 +10,7 @@ struct CommandPaletteView: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            TextField("Search commands and tools", text: $model.query)
+            TextField(L10n.text("Search commands and tools"), text: $model.query)
                 .textFieldStyle(.plain).font(.system(size: 17))
                 .padding(.horizontal, 16).padding(.vertical, 13)
                 .focused($searching)
@@ -33,7 +33,7 @@ struct CommandPaletteView: View {
                 }
                 .frame(maxHeight: .infinity)
                 .overlay {
-                    if model.results.isEmpty { Text("No commands match").foregroundStyle(.secondary) }
+                    if model.results.isEmpty { Text(L10n.text("No commands match")).foregroundStyle(.secondary) }
                 }
                 .onChange(of: model.selection) { _, _ in
                     if let id = model.selected?.id { scroller.scrollTo(id) }
@@ -72,7 +72,10 @@ struct CommandPaletteView: View {
 final class CommandPaletteController {
     static let shared = CommandPaletteController()
     /// Left out of the palette: the palette itself and the system menus.
-    static let skipped: Set<String> = ["Search Commands…", "Window", "Help", "Services"]
+    static let skipped: Set<String> = {
+        let titles = ["Search Commands…", "Window", "Help", "Services"]
+        return Set(titles + titles.map { L10n.text($0) })
+    }()
 
     private(set) var panel: PalettePanel?
     private weak var window: NSWindow?

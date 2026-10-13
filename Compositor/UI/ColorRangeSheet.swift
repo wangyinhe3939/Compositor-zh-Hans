@@ -15,32 +15,32 @@ struct ColorRangeSheet: View {
                         .background(edit?.effectiveMode == mode ? Color.accentColor.opacity(0.25) : .clear,
                                     in: RoundedRectangle(cornerRadius: 4))
                         .help(help(mode))
-                        .accessibilityLabel("\(mode.rawValue) color")
+                        .accessibilityLabel(L10n.text("%@ color", L10n.text(mode.rawValue)))
                 }
                 Spacer()
             }
             preview
-            Text(edit?.hasColors == true ? "Shift-click adds a color, Option-click takes one away."
-                                         : "Click the image to pick the color to select.")
+            Text(edit?.hasColors == true ? L10n.text("Shift-click adds a color, Option-click takes one away.")
+                                         : L10n.text("Click the image to pick the color to select."))
                 .font(.callout).foregroundStyle(.secondary)
             HStack(spacing: 10) {
-                Text("Fuzziness").fixedSize()
+                Text(L10n.text("Fuzziness")).fixedSize()
                     .scrubbable(sensitivity: 1, value: fuzziness, range: ColorRangeEdit.fuzzinessRange)
                 Slider(value: fuzziness, in: ColorRangeEdit.fuzzinessRange)
-                TextField("Fuzziness", value: fuzziness, format: .number.precision(.fractionLength(0)))
+                TextField(L10n.text("Fuzziness"), value: fuzziness, format: .number.precision(.fractionLength(0)))
                     .frame(width: 48).textFieldStyle(.roundedBorder).multilineTextAlignment(.trailing)
             }
-            .help("How far a color may be from the picked ones and still be selected")
-            Toggle("Invert", isOn: Binding(get: { edit?.invert ?? false }, set: { edit?.invert = $0; session.updateColorRange() }))
-                .help("Select everything except those colors, such as all but a green screen")
+            .help(L10n.text("How far a color may be from the picked ones and still be selected"))
+            Toggle(L10n.text("Invert"), isOn: Binding(get: { edit?.invert ?? false }, set: { edit?.invert = $0; session.updateColorRange() }))
+                .help(L10n.text("Select everything except those colors, such as all but a green screen"))
             if let error = edit?.error {
                 Text(error).foregroundStyle(.orange).fixedSize(horizontal: false, vertical: true)
             }
             Divider()
             HStack {
-                Button("Cancel") { session.cancelColorRange() }.configuredNativeShortcut(.escape)
+                Button(L10n.text("Cancel")) { session.cancelColorRange() }.configuredNativeShortcut(.escape)
                 Spacer()
-                Button("OK") { session.commitColorRange() }
+                Button(L10n.text("OK")) { session.commitColorRange() }
                     .configuredNativeShortcut(.return).buttonStyle(.borderedProminent)
             }
         }
@@ -72,9 +72,9 @@ struct ColorRangeSheet: View {
 
     private func help(_ mode: HueSampleMode) -> String {
         switch mode {
-        case .replace: "Click the image to select that color"
-        case .add: "Click the image to add that color to the selection"
-        case .remove: "Click the image to take that color out of the selection"
+        case .replace: L10n.text("Click the image to select that color")
+        case .add: L10n.text("Click the image to add that color to the selection")
+        case .remove: L10n.text("Click the image to take that color out of the selection")
         }
     }
 

@@ -20,15 +20,15 @@ nonisolated enum PSDText {
         var anchorIsFrame: Bool
     }
 
-    static let rasterizedNote = "Editable Photoshop text becomes pixels and can’t be retyped."
-    static let firstStyleNote = "Only the first text style was kept."
-    static let warpNote = "The Photoshop text warp was omitted."
-    static let fauxNote = "Faux bold or faux italic was omitted."
-    static let justifyNote = "Full justification was imported as left alignment."
+    static let rasterizedNote = L10n.text("Editable Photoshop text becomes pixels and can’t be retyped.")
+    static let firstStyleNote = L10n.text("Only the first text style was kept.")
+    static let warpNote = L10n.text("The Photoshop text warp was omitted.")
+    static let fauxNote = L10n.text("Faux bold or faux italic was omitted.")
+    static let justifyNote = L10n.text("Full justification was imported as left alignment.")
 
     static func missingFontNote(_ name: String) -> String? {
         guard NSFont(name: name, size: 12) == nil else { return nil }
-        return "The font “\(name)” isn’t installed, so the text was drawn with the system font."
+        return L10n.text("The font “%@” isn’t installed, so the text was drawn with the system font.", String(describing: name))
     }
 
     static func parse(extra: [String: Data]) -> Source? {

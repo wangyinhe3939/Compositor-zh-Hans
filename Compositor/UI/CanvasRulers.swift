@@ -48,7 +48,7 @@ final class CanvasRulerNSView: NSView {
         super.init(frame: .zero)
         setAccessibilityElement(true)
         setAccessibilityRole(.unknown)
-        setAccessibilityLabel(axis == .horizontal ? "Horizontal ruler" : "Vertical ruler")
+        setAccessibilityLabel(axis == .horizontal ? L10n.text("Horizontal ruler") : L10n.text("Vertical ruler"))
     }
 
     required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }

@@ -17,9 +17,9 @@ struct EffectsSheet: View {
             }
             HStack(spacing: 10) {
                 Spacer()
-                Button("Cancel") { session.finishEffectsEditing(commit: false) }
+                Button(L10n.text("Cancel")) { session.finishEffectsEditing(commit: false) }
                     .configuredNativeShortcut(.escape)
-                Button("OK") { session.finishEffectsEditing(commit: true) }
+                Button(L10n.text("OK")) { session.finishEffectsEditing(commit: true) }
                     .configuredNativeShortcut(.return)
             }
         }
@@ -31,27 +31,27 @@ struct EffectsSheet: View {
     @ViewBuilder private var stroke: some View {
         let effect = session.editingEffects.stroke
         HStack {
-            Text("Stroke").font(.headline)
+            Text(L10n.text("Stroke")).font(.headline)
             Spacer()
             if let effect {
-                Picker("Position", selection: Binding(get: { effect.inside }, set: { inside in
+                Picker(L10n.text("Position"), selection: Binding(get: { effect.inside }, set: { inside in
                     session.changeEffects { $0.stroke?.inside = inside }
                 })) {
-                    Text("Outside").tag(false)
-                    Text("Inside").tag(true)
+                    Text(L10n.text("Outside")).tag(false)
+                    Text(L10n.text("Inside")).tag(true)
                 }.pickerStyle(.segmented).labelsHidden().fixedSize()
             }
         }
         if let effect {
             HStack {
-                Text("Color").frame(width: 64, alignment: .leading)
+                Text(L10n.text("Color")).frame(width: 64, alignment: .leading)
                 swatch(.stroke)
                 Spacer()
             }
-            slider("Size", value: Binding(get: { effect.size }, set: { size in
+            slider(L10n.text("Size"), value: Binding(get: { effect.size }, set: { size in
                 session.changeEffects { $0.stroke?.size = size }
             }), range: 0...20, inputRange: 0...StrokeEffect.maxSize, unit: "px")
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.stroke?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
         }
@@ -60,21 +60,21 @@ struct EffectsSheet: View {
     @ViewBuilder private var shadow: some View {
         let effect = session.editingEffects.shadow
         HStack {
-            Text("Drop Shadow").font(.headline)
+            Text(L10n.text("Drop Shadow")).font(.headline)
             Spacer()
             if effect != nil { swatch(.shadow) }
         }
         if let effect {
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.shadow?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
-            slider("Angle", value: Binding(get: { effect.angle }, set: { angle in
+            slider(L10n.text("Angle"), value: Binding(get: { effect.angle }, set: { angle in
                 session.changeEffects { $0.shadow?.angle = angle }
             }), range: -180...180, unit: "°")
-            slider("Distance", value: Binding(get: { effect.distance }, set: { distance in
+            slider(L10n.text("Distance"), value: Binding(get: { effect.distance }, set: { distance in
                 session.changeEffects { $0.shadow?.distance = distance }
             }), range: 0...100, inputRange: 0...5000, unit: "px")
-            slider("Blur", value: Binding(get: { effect.blur }, set: { blur in
+            slider(L10n.text("Blur"), value: Binding(get: { effect.blur }, set: { blur in
                 session.changeEffects { $0.shadow?.blur = blur }
             }), range: 0...100, inputRange: 0...500, unit: "px")
         }
@@ -83,12 +83,12 @@ struct EffectsSheet: View {
     @ViewBuilder private var colorOverlay: some View {
         let effect = session.editingEffects.colorOverlay
         HStack {
-            Text("Color Overlay").font(.headline)
+            Text(L10n.text("Color Overlay")).font(.headline)
             Spacer()
             if effect != nil { swatch(.colorOverlay) }
         }
         if let effect {
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.colorOverlay?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
         }
@@ -97,21 +97,21 @@ struct EffectsSheet: View {
     @ViewBuilder private var innerShadow: some View {
         let effect = session.editingEffects.innerShadow
         HStack {
-            Text("Inner Shadow").font(.headline)
+            Text(L10n.text("Inner Shadow")).font(.headline)
             Spacer()
             if effect != nil { swatch(.innerShadow) }
         }
         if let effect {
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.innerShadow?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
-            slider("Angle", value: Binding(get: { effect.angle }, set: { angle in
+            slider(L10n.text("Angle"), value: Binding(get: { effect.angle }, set: { angle in
                 session.changeEffects { $0.innerShadow?.angle = angle }
             }), range: -180...180, unit: "°")
-            slider("Distance", value: Binding(get: { effect.distance }, set: { distance in
+            slider(L10n.text("Distance"), value: Binding(get: { effect.distance }, set: { distance in
                 session.changeEffects { $0.innerShadow?.distance = distance }
             }), range: 0...50, inputRange: 0...5000, unit: "px")
-            slider("Blur", value: Binding(get: { effect.blur }, set: { blur in
+            slider(L10n.text("Blur"), value: Binding(get: { effect.blur }, set: { blur in
                 session.changeEffects { $0.innerShadow?.blur = blur }
             }), range: 0...100, inputRange: 0...500, unit: "px")
         }
@@ -120,15 +120,15 @@ struct EffectsSheet: View {
     @ViewBuilder private var outerGlow: some View {
         let effect = session.editingEffects.outerGlow
         HStack {
-            Text("Outer Glow").font(.headline)
+            Text(L10n.text("Outer Glow")).font(.headline)
             Spacer()
             if effect != nil { swatch(.outerGlow) }
         }
         if let effect {
-            slider("Size", value: Binding(get: { effect.size }, set: { size in
+            slider(L10n.text("Size"), value: Binding(get: { effect.size }, set: { size in
                 session.changeEffects { $0.outerGlow?.size = size }
             }), range: 0...100, inputRange: 0...500, unit: "px")
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.outerGlow?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
         }
@@ -137,15 +137,15 @@ struct EffectsSheet: View {
     @ViewBuilder private var innerGlow: some View {
         let effect = session.editingEffects.innerGlow
         HStack {
-            Text("Inner Glow").font(.headline)
+            Text(L10n.text("Inner Glow")).font(.headline)
             Spacer()
             if effect != nil { swatch(.innerGlow) }
         }
         if let effect {
-            slider("Size", value: Binding(get: { effect.size }, set: { size in
+            slider(L10n.text("Size"), value: Binding(get: { effect.size }, set: { size in
                 session.changeEffects { $0.innerGlow?.size = size }
             }), range: 0...100, inputRange: 0...500, unit: "px")
-            slider("Opacity", value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
+            slider(L10n.text("Opacity"), value: Binding(get: { CGFloat(effect.opacity * 100) }, set: { value in
                 session.changeEffects { $0.innerGlow?.opacity = Double(value) / 100 }
             }), range: 0...100, unit: "%")
         }
@@ -163,8 +163,8 @@ struct EffectsSheet: View {
                 .contentShape(shape)
         }
         .buttonStyle(.plain)
-        .help(kind.rawValue + " color")
-        .accessibilityLabel(kind.rawValue + " color")
+        .help(L10n.text("%@ color", L10n.text(kind.rawValue)))
+        .accessibilityLabel(L10n.text("%@ color", L10n.text(kind.rawValue)))
     }
 
     private func slider(_ title: String, value: Binding<CGFloat>, range: ClosedRange<CGFloat>,
@@ -175,13 +175,13 @@ struct EffectsSheet: View {
             value.wrappedValue = min(limits.upperBound, max(limits.lowerBound, CGFloat(amount)))
         }
         return HStack(spacing: 10) {
-            Text(title).frame(width: 64, alignment: .leading)
+            Text(L10n.text(title)).frame(width: 64, alignment: .leading)
                 .scrubbable(sensitivity: 1, value: value, range: limits)
             // A manually entered larger value stays intact; only the thumb is pinned
             // to the end of the slider until the user drags it again.
             Slider(value: Binding(get: { min(range.upperBound, max(range.lowerBound, value.wrappedValue)) },
                                   set: { value.wrappedValue = $0 }), in: range).frame(width: 130)
-            TextField(title, value: Binding(get: { Double(value.wrappedValue) },
+            TextField(L10n.text(title), value: Binding(get: { Double(value.wrappedValue) },
                                             set: setAmount),
                       format: .number.precision(.fractionLength(0)))
                 .frame(width: 48).textFieldStyle(.roundedBorder).multilineTextAlignment(.trailing)

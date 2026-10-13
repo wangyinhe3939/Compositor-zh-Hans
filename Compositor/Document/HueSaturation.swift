@@ -145,9 +145,9 @@ nonisolated enum HueSampleMode: String, CaseIterable, Sendable {
     }
     var help: String {
         switch self {
-        case .replace: "Click the image to center this range on that color"
-        case .add: "Click the image to widen this range to include that color"
-        case .remove: "Click the image to narrow this range to exclude that color"
+        case .replace: L10n.text("Click the image to center this range on that color")
+        case .add: L10n.text("Click the image to widen this range to include that color")
+        case .remove: L10n.text("Click the image to narrow this range to exclude that color")
         }
     }
 }
@@ -555,7 +555,7 @@ extension EditorSession {
         }
         guard let index = document?.layers.firstIndex(where: { $0.id == edit.layerID }),
               let current = document?.layers[index], current.asset?.image === edit.original.image else { return }
-        beginEdit("Hue/Saturation")
+        beginEdit(L10n.text("Hue/Saturation"))
         document?.layers[index] = ImageLayer(id: current.id,
             asset: ImportedImage(image: asset.image, thumbnail: asset.thumbnail, name: current.name, deep: asset.deep),
             name: current.name, isVisible: current.isVisible, transform: current.transform, parentID: current.parentID,

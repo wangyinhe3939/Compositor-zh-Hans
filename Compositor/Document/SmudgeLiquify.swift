@@ -214,7 +214,7 @@ final class WarpStroke {
 extension EditorSession {
     func beginWarp(at point: CGPoint) {
         guard canPaint, !isMaskSelected, let layer = activeLayer, let image = layer.asset?.image, let document else {
-            brushError = isMaskSelected ? "Smudge and Liquify work on a layer's pixels, not its mask." : paintRefusal
+            brushError = isMaskSelected ? L10n.text("Smudge and Liquify work on a layer's pixels, not its mask.") : paintRefusal
             return
         }
         finishOpacityEdit()
@@ -248,7 +248,7 @@ extension EditorSession {
             // A 16-bit working copy goes into the layer's 16-bit pixels.
             if result.bitsPerComponent == 16 { stroke.deepClone = stroke.clone }
             stroke.replacesWithClone = true
-            stroke.editName = warp.mode.rawValue
+            stroke.editName = L10n.text(warp.mode.rawValue)
             // The tip is solid and a little wider than the brush, so a point every twentieth of its width covers what
             // every dab did: a big brush on a big canvas lays thousands of dabs, and replaying each one stalled the release.
             let spacing = max(1, warp.diameter * 0.05)

@@ -52,8 +52,8 @@ struct ContentView: View {
             }
             if session.tool == .eyedropper {
                 HStack(spacing: 16) {
-                    Text("Eyedropper").font(ToolHeaderStyle.titleFont)
-                    Toggle("Sample Ring", isOn: $session.showsSampleRing).toggleStyle(.checkbox)
+                    Text(L10n.text("Eyedropper")).font(ToolHeaderStyle.titleFont)
+                    Toggle(L10n.text("Sample Ring"), isOn: $session.showsSampleRing).toggleStyle(.checkbox)
                     Spacer()
                 }.padding(.horizontal, 18).toolHeaderBar()
                 Divider()
@@ -69,7 +69,7 @@ struct ContentView: View {
             // No tool (A) keeps the header, so the canvas doesn't jump.
             if session.tool == .idle {
                 HStack(spacing: 16) {
-                    Text("Select a tool").font(ToolHeaderStyle.titleFont)
+                    Text(L10n.text("Select a tool")).font(ToolHeaderStyle.titleFont)
                     Spacer()
                 }.padding(.horizontal, 18).toolHeaderBar()
                 Divider()
@@ -177,11 +177,11 @@ struct ContentView: View {
         // The toolbar itself is hidden and shown by the window (see `toggleCanvasOnly`), which lays its buttons out
         // again properly; hidden here instead, it came back with the tabs over the window buttons.
         .ignoresSafeArea(.container, edges: session.canvasOnly ? .top : [])
-        .navigationTitle(session.projectURL?.deletingPathExtension().lastPathComponent ?? "Untitled")
+        .navigationTitle(session.projectURL?.deletingPathExtension().lastPathComponent ?? L10n.text("Untitled"))
         .toolbar {
             ToolbarItem(placement: .navigation) {
-                Button { requestNewCanvas() } label: { Label("New canvas", systemImage: "plus") }
-                    .help("New canvas (⌘N)").accessibilityIdentifier("newCanvasToolbar")
+                Button { requestNewCanvas() } label: { Label(L10n.text("New canvas"), systemImage: "plus") }
+                    .help(L10n.text("New canvas (⌘N)")).accessibilityIdentifier("newCanvasToolbar")
                     .disabled(session.isImporting || session.showsBusy || session.levels != nil)
                     .modifier(NewProjectDropTarget(workspace: applicationDelegate?.workspace))
             }
@@ -200,12 +200,12 @@ struct ContentView: View {
             // Without this spacer, the growing tab strip pushes the primary actions left.
             ToolbarSpacer(.flexible, placement: .navigation)
             ToolbarItem(placement: .primaryAction) {
-                Button("Fit") { session.fit() }.help("Fit canvas in window (⌘0)")
+                Button(L10n.text("Fit")) { session.fit() }.help(L10n.text("Fit canvas in window (⌘0)"))
                     .accessibilityIdentifier("fitCanvas").disabled(session.document == nil)
                     .padding(.horizontal, 4)
             }
             ToolbarItem(placement: .primaryAction) {
-                Button("100%") { session.zoom(to: 1) }.help("Actual pixels (⌘1)")
+                Button("100%") { session.zoom(to: 1) }.help(L10n.text("Actual pixels (⌘1)"))
                     .accessibilityIdentifier("actualPixels").disabled(session.document == nil)
                     .padding(.horizontal, 4)
             }
@@ -213,10 +213,10 @@ struct ContentView: View {
                 HStack(spacing: 0) {
                     Button { session.zoomKeyboard(by: 1) } label: {
                         Image(systemName: "plus.magnifyingglass")
-                    }.help("Zoom in (⌘+)").disabled(session.document == nil)
+                    }.help(L10n.text("Zoom in (⌘+)")).disabled(session.document == nil)
                     Button { session.zoomKeyboard(by: -1) } label: {
                         Image(systemName: "minus.magnifyingglass")
-                    }.help("Zoom out (⌘−)").disabled(session.document == nil)
+                    }.help(L10n.text("Zoom out (⌘−)")).disabled(session.document == nil)
                 }
                 .padding(.horizontal, 4)
             }
@@ -229,27 +229,27 @@ struct ContentView: View {
             if closed { levelsPanel.close() }
             else {
                 levelsPanel.onClose = { session.cancelLevels() }
-                levelsPanel.show(title: "Levels", content: LevelsSheet(session: session))
+                levelsPanel.show(title: L10n.text("Levels"), content: LevelsSheet(session: session))
             }
         }
         .onChange(of: session.colorRange == nil) { _, closed in
             if closed { colorRangePanel.close() }
             else {
                 colorRangePanel.onClose = { session.cancelColorRange() }
-                colorRangePanel.show(title: "Color Range", content: ColorRangeSheet(session: session))
+                colorRangePanel.show(title: L10n.text("Color Range"), content: ColorRangeSheet(session: session))
             }
         }
         .onChange(of: session.hueSaturation == nil) { _, closed in
             if closed { adjustmentPanel.close() }
             else {
                 adjustmentPanel.onClose = { session.cancelHueSaturation() }
-                adjustmentPanel.show(title: "Hue/Saturation", content: HueSaturationSheet(session: session))
+                adjustmentPanel.show(title: L10n.text("Hue/Saturation"), content: HueSaturationSheet(session: session))
             }
         }
         .onChange(of: session.effectsEditing) { _, selection in
             if let selection {
                 effectsPanel.onClose = { session.finishEffectsEditing(commit: false) }
-                effectsPanel.show(title: selection.kind.rawValue, content: EffectsSheet(session: session, kind: selection.kind))
+                effectsPanel.show(title: L10n.text(selection.kind.rawValue), content: EffectsSheet(session: session, kind: selection.kind))
             } else { effectsPanel.close() }
         }
         .onChange(of: session.document?.layers) { _, layers in
@@ -263,7 +263,7 @@ struct ContentView: View {
         .onChange(of: session.selectionAmountOperation) { _, operation in
             if let operation {
                 selectionAmountPanel.onClose = { session.selectionAmountOperation = nil }
-                selectionAmountPanel.show(title: operation.rawValue + " Selection",
+                selectionAmountPanel.show(title: L10n.text(operation.rawValue) + L10n.text(" Selection"),
                     content: SelectionAmountSheet(session: session, operation: operation))
             } else { selectionAmountPanel.close() }
         }
@@ -273,7 +273,7 @@ struct ContentView: View {
             else {
                 filterPanel.onClose = { session.cancelFilter() }
                 let placement: FloatingPanelPlacement = session.filterEdit?.kind == .cameraRaw ? .dockedToMainWindowRight : .automatic
-                filterPanel.show(title: session.filterEdit?.kind.rawValue ?? "Filter", content: FilterSheet(session: session),
+                filterPanel.show(title: L10n.text(session.filterEdit?.kind.rawValue ?? "Filter"), content: FilterSheet(session: session),
                                  placement: placement)
             }
         }
@@ -289,18 +289,18 @@ struct ContentView: View {
                 if (error as NSError).code != NSUserCancelledError { session.importError = error.localizedDescription }
             }
         }
-        .alert("Import couldn’t finish", isPresented: Binding(
+        .alert(L10n.text("Import couldn’t finish"), isPresented: Binding(
             get: { session.importError != nil }, set: { if !$0 { session.importError = nil } })) {
                 // No cancel role: an alert with only a cancel button gets a second OK of its own.
-                Button("OK") { session.importError = nil }
+                Button(L10n.text("OK")) { session.importError = nil }
             } message: { Text(session.importError ?? "") }
-        .alert("Couldn’t paint", isPresented: Binding(get: { session.brushError != nil },
+        .alert(L10n.text("Couldn’t paint"), isPresented: Binding(get: { session.brushError != nil },
             set: { if !$0 { session.brushError = nil } })) {
-                Button("OK") { session.brushError = nil }
+                Button(L10n.text("OK")) { session.brushError = nil }
             } message: { Text(session.brushError ?? "") }
-        .alert("Couldn’t crop", isPresented: Binding(get: { session.cropError != nil },
+        .alert(L10n.text("Couldn’t crop"), isPresented: Binding(get: { session.cropError != nil },
             set: { if !$0 { session.cropError = nil } })) {
-                Button("OK") { session.cropError = nil }
+                Button(L10n.text("OK")) { session.cropError = nil }
             } message: { Text(session.cropError ?? "") }
     }
     private func requestNewCanvas() {
@@ -351,18 +351,18 @@ struct ContentView: View {
             if let document = session.document {
                 Text(session.viewport.zoom, format: .percent.precision(.fractionLength(0...1)))
                     .frame(width: 62, alignment: .leading).accessibilityIdentifier("zoomStatus")
-                Text("\(document.width) × \(document.height) px").accessibilityIdentifier("canvasDimensions")
-                Text("sRGB · Transparent")
-            } else { Text("Ready when you are") }
+                Text(L10n.text("%@ × %@ px", String(describing: document.width), String(describing: document.height))).accessibilityIdentifier("canvasDimensions")
+                Text(L10n.text("sRGB · Transparent"))
+            } else { Text(L10n.text("Ready when you are")) }
             Spacer()
             if session.showsBusy {
                 ProgressView().controlSize(.mini)
-                Text("Working…")
+                Text(L10n.text("Working…"))
             } else if session.isImporting {
                 ProgressView().controlSize(.mini)
-                Text("Importing images…")
+                Text(L10n.text("Importing images…"))
             } else {
-                Text(session.tool == .marquee ? (session.marqueeKind == .ellipse ? "Drag an ellipse · Shift add · Option subtract · Shift again mid-drag circle · Drag inside to move · Delete clears · ⌘D deselect" : "Drag a rectangle · Shift add · Option subtract · Shift again mid-drag square · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect") : session.tool == .wand ? (session.wandMode == .object ? "Click an object to select its outline · Tab for Wand · Shift add · Option subtract · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect" : "Click to select similar colors · Tab for Object · Shift add · Option subtract · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect") : session.tool == .lasso ? (session.lassoKind == .freehand ? "Drag to select · Drag inside to move · Shift add · Option subtract · Delete clears · ⌥⌫/⌘⌫ fill · ⌘D deselect" : "Click corners · Click start, double-click or Enter to close · Delete removes corner · Escape cancel") : session.tool == .brush ? (session.brushMode == .erase ? "Drag to erase" : "Drag to paint") + " · [ ] size · Shift-[ ] hardness · 1–0 opacity · Escape cancel · Space to pan" : session.tool == .blur ? (session.blurMode == .blur ? "Drag to soften" : session.blurMode == .smudge ? "Drag to smudge" : "Drag to push pixels") + " · [ ] size · Shift-[ ] hardness · 1–0 strength · Space to pan" : session.tool == .cloneStamp ? "Option-click to set the source · Drag to clone · [ ] size · Shift-[ ] hardness · 1–0 opacity · Space to pan" : session.tool == .spotHealing ? "Drag over blemishes to heal · [ ] size · Shift-[ ] hardness · Escape cancel · Space to pan" : session.tool == .type ? "Drag a text box · Click text to edit · Drag box handles to resize · ⌘Return finish · Escape cancel" : session.tool == .shape ? "Drag to draw a shape on a new layer · Shift \(session.shapeKind == .line ? "45°" : session.shapeKind == .rectangle ? "square" : "circle") · Option from center · Shift-U or Tab for the next shape · Escape cancel · Space to pan" : session.tool == .gradient ? "Drag to draw · Drag ends to adjust · Shift 45° · 1–0 opacity · Enter apply · Escape cancel" : session.tool == .crop ? "Drag to crop · Enter apply · Escape cancel · Space to pan" : session.tool == .move ? "Drag to move · Handles to resize · Circle to rotate · 1–0 layer opacity · Space to pan" : session.tool == .hand ? "Drag to pan · Pinch to zoom" : session.tool == .idle ? "No tool selected · Press a tool's key to pick one · Space to pan" : "Click to zoom in · Option-click to zoom out · Drag right or left to zoom smoothly · Space to pan")
+                Text(session.tool == .marquee ? (session.marqueeKind == .ellipse ? L10n.text("Drag an ellipse · Shift add · Option subtract · Shift again mid-drag circle · Drag inside to move · Delete clears · ⌘D deselect") : L10n.text("Drag a rectangle · Shift add · Option subtract · Shift again mid-drag square · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect")) : session.tool == .wand ? (session.wandMode == .object ? L10n.text("Click an object to select its outline · Tab for Wand · Shift add · Option subtract · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect") : L10n.text("Click to select similar colors · Tab for Object · Shift add · Option subtract · Drag inside to move · ⌘-drag moves pixels · Delete clears · ⌘D deselect")) : session.tool == .lasso ? (session.lassoKind == .freehand ? L10n.text("Drag to select · Drag inside to move · Shift add · Option subtract · Delete clears · ⌥⌫/⌘⌫ fill · ⌘D deselect") : L10n.text("Click corners · Click start, double-click or Enter to close · Delete removes corner · Escape cancel")) : session.tool == .brush ? (session.brushMode == .erase ? L10n.text("Drag to erase") : L10n.text("Drag to paint")) + L10n.text(" · [ ] size · Shift-[ ] hardness · 1–0 opacity · Escape cancel · Space to pan") : session.tool == .blur ? (session.blurMode == .blur ? L10n.text("Drag to soften") : session.blurMode == .smudge ? L10n.text("Drag to smudge") : L10n.text("Drag to push pixels")) + L10n.text(" · [ ] size · Shift-[ ] hardness · 1–0 strength · Space to pan") : session.tool == .cloneStamp ? L10n.text("Option-click to set the source · Drag to clone · [ ] size · Shift-[ ] hardness · 1–0 opacity · Space to pan") : session.tool == .spotHealing ? L10n.text("Drag over blemishes to heal · [ ] size · Shift-[ ] hardness · Escape cancel · Space to pan") : session.tool == .type ? L10n.text("Drag a text box · Click text to edit · Drag box handles to resize · ⌘Return finish · Escape cancel") : session.tool == .shape ? L10n.text("Drag to draw a shape on a new layer · Shift %@ · Option from center · Shift-U or Tab for the next shape · Escape cancel · Space to pan", String(describing: session.shapeKind == .line ? "45°" : session.shapeKind == .rectangle ? L10n.text("square") : L10n.text("circle"))) : session.tool == .gradient ? L10n.text("Drag to draw · Drag ends to adjust · Shift 45° · 1–0 opacity · Enter apply · Escape cancel") : session.tool == .crop ? L10n.text("Drag to crop · Enter apply · Escape cancel · Space to pan") : session.tool == .move ? L10n.text("Drag to move · Handles to resize · Circle to rotate · 1–0 layer opacity · Space to pan") : session.tool == .hand ? L10n.text("Drag to pan · Pinch to zoom") : session.tool == .idle ? L10n.text("No tool selected · Press a tool's key to pick one · Space to pan") : L10n.text("Click to zoom in · Option-click to zoom out · Drag right or left to zoom smoothly · Space to pan"))
             }
         }
         .font(.system(size: 11).monospacedDigit()).foregroundStyle(.secondary)
@@ -388,7 +388,7 @@ private struct PanelResizeEdge: View {
                         width = min(range.upperBound, max(range.lowerBound, (start - value.translation.width).rounded()))
                     }
                     .onEnded { _ in startWidth = nil })
-                .help("Drag to resize the panel")
+                .help(L10n.text("Drag to resize the panel"))
         }
     }
 }

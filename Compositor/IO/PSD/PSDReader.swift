@@ -357,7 +357,7 @@ nonisolated enum PSDReader {
             }
             let isGroup = layer.section == 1 || layer.section == 2
             let id = isGroup ? (groups.popLast() ?? UUID()) : UUID()
-            var record = PSDRecord(id: id, name: layer.name.isEmpty ? "Layer" : layer.name)
+            var record = PSDRecord(id: id, name: layer.name.isEmpty ? L10n.text("Layer") : layer.name)
             record.parentID = groups.last
             record.isGroup = isGroup
             record.isVisible = !layer.hidden

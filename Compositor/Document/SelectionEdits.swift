@@ -59,7 +59,7 @@ extension EditorSession {
         let color = isMaskSelected
             ? CGColor(gray: value.red, alpha: 1)
             : CGColor(colorSpace: CGColorSpace(name: CGColorSpace.sRGB)!, components: [value.red, value.green, value.blue, 1])!
-        await applyPixelEdit(to: layer, name: isMaskSelected ? "Fill Mask" : "Fill") { try $0.fill(color) }
+        await applyPixelEdit(to: layer, name: isMaskSelected ? L10n.text("Fill Mask") : L10n.text("Fill")) { try $0.fill(color) }
     }
 
     /// Delete with a selection: image pixels become transparent; on a mask the
@@ -68,7 +68,7 @@ extension EditorSession {
         guard selection != nil, canEditPixels, let layer = activeLayer else { return }
         if isMaskSelected { await fillSelection(with: .background); return }
         guard layer.asset != nil else { return }
-        await applyPixelEdit(to: layer, name: "Clear") { try $0.clearPixels() }
+        await applyPixelEdit(to: layer, name: L10n.text("Clear")) { try $0.clearPixels() }
     }
 
     /// The Delete key: clears the selection when there is one; otherwise deletes the
@@ -139,7 +139,7 @@ extension EditorSession {
             // Only write over the layer the invert was computed from.
             guard let current = self.document?.layers[safe: index], current.id == layer.id,
                   current.asset?.image === layer.asset?.image, current.mask?.asset.image === layer.mask?.asset.image else { return }
-            beginEdit(mask ? "Invert Mask" : "Invert")
+            beginEdit(mask ? L10n.text("Invert Mask") : L10n.text("Invert"))
             if mask {
                 self.document?.layers[index].mask = current.mask.map { $0.replacing(asset) } ?? LayerMask(asset: asset)
             } else {
@@ -204,7 +204,7 @@ extension EditorSession {
             let moved = move.movedSelection
             do {
                 try move.applyOffset()
-                try await commitRasterEdit(move.raster, name: move.duplicate ? "Duplicate Pixels" : "Move Pixels") { self.document?.selection = moved }
+                try await commitRasterEdit(move.raster, name: move.duplicate ? L10n.text("Duplicate Pixels") : L10n.text("Move Pixels")) { self.document?.selection = moved }
             } catch { brushError = error.localizedDescription }
         }
         pixelMove = nil

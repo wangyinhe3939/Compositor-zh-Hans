@@ -12,13 +12,13 @@ struct TrimSheet: View {
 
     @ViewBuilder private var sheet: some View {
         VStack(alignment: .leading, spacing: 18) {
-            Text("Trim").font(.title2.bold())
+            Text(L10n.text("Trim")).font(.title2.bold())
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Based On").font(.headline)
+                Text(L10n.text("Based On")).font(.headline)
                 Picker("", selection: $basedOn) {
                     ForEach(TrimBasedOn.allCases) { option in
-                        Text(option.rawValue).tag(option)
+                        Text(L10n.text(option.rawValue)).tag(option)
                     }
                 }
                 .labelsHidden()
@@ -28,15 +28,15 @@ struct TrimSheet: View {
             Divider()
 
             VStack(alignment: .leading, spacing: 8) {
-                Text("Trim Away").font(.headline)
+                Text(L10n.text("Trim Away")).font(.headline)
                 Grid(alignment: .leading, horizontalSpacing: 24, verticalSpacing: 8) {
                     GridRow {
-                        Toggle("Top", isOn: $trimTop)
-                        Toggle("Bottom", isOn: $trimBottom)
+                        Toggle(L10n.text("Top"), isOn: $trimTop)
+                        Toggle(L10n.text("Bottom"), isOn: $trimBottom)
                     }
                     GridRow {
-                        Toggle("Left", isOn: $trimLeft)
-                        Toggle("Right", isOn: $trimRight)
+                        Toggle(L10n.text("Left"), isOn: $trimLeft)
+                        Toggle(L10n.text("Right"), isOn: $trimRight)
                     }
                 }
             }
@@ -44,10 +44,10 @@ struct TrimSheet: View {
             Divider()
 
             HStack {
-                Button("Cancel") { finish(nil) }
+                Button(L10n.text("Cancel")) { finish(nil) }
                     .configuredNativeShortcut(.escape)
                 Spacer()
-                Button("OK") {
+                Button(L10n.text("OK")) {
                     let options = TrimOptions(
                         basedOn: basedOn,
                         top: trimTop,

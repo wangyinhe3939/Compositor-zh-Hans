@@ -37,7 +37,7 @@ extension EditorSession {
         guard canEditLayers, let document else { return }
         let canvas = document.size
         finishOpacityEdit()
-        beginEdit(clockwise ? "Rotate Canvas 90° Clockwise" : "Rotate Canvas 90° Counterclockwise")
+        beginEdit(clockwise ? L10n.text("Rotate Canvas 90° Clockwise") : L10n.text("Rotate Canvas 90° Counterclockwise"))
         var layers = document.layers
         for index in layers.indices {
             layers[index].transform = layers[index].transform.quarterTurned(clockwise: clockwise, canvas: canvas)

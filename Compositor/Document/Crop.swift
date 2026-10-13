@@ -243,7 +243,7 @@ extension EditorSession {
                 to: CanvasSizeOptions(width: Int(rect.width), height: Int(rect.height),
                     contentOffset: CGPoint(x: -rect.minX, y: -rect.minY)))
             cropRect = nil
-            applyDocumentSize(result, actionName: "Crop")
+            applyDocumentSize(result, actionName: L10n.text("Crop"))
         } catch { cropError = error.localizedDescription }
     }
 }

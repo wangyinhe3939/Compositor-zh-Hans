@@ -5,22 +5,22 @@ struct ShapeControls: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Text("Shape").font(ToolHeaderStyle.titleFont)
-            Picker("Shape", selection: Binding(get: { session.shapeKind }, set: { kind in
+            Text(L10n.text("Shape")).font(ToolHeaderStyle.titleFont)
+            Picker(L10n.text("Shape"), selection: Binding(get: { session.shapeKind }, set: { kind in
                 session.cancelShape()
                 session.shapeKind = kind
             })) {
-                ForEach(ShapeKind.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                ForEach(ShapeKind.allCases, id: \.self) { Text(L10n.text($0.rawValue)).tag($0) }
             }
             .pickerStyle(.segmented).labelsHidden().fixedSize()
-            .help("Shift-U (or Tab) steps through Rectangle, Ellipse and Line")
+            .help(L10n.text("Shift-U (or Tab) steps through Rectangle, Ellipse and Line"))
             if session.shapeKind == .line {
                 HStack(spacing: 6) {
-                    Text("Width").scrubbable(sensitivity: 1, value: $session.shapeLineWidth, range: 1...5000)
+                    Text(L10n.text("Width")).scrubbable(sensitivity: 1, value: $session.shapeLineWidth, range: 1...5000)
                     Slider(value: Binding(get: { min(100, session.shapeLineWidth) },
                                           set: { session.shapeLineWidth = $0.rounded() }), in: 1...100)
                         .frame(width: 100)
-                    TextField("Width", value: Binding(get: { session.shapeLineWidth },
+                    TextField(L10n.text("Width"), value: Binding(get: { session.shapeLineWidth },
                                                       set: { session.shapeLineWidth = $0.isFinite ? min(5000, max(1, $0)) : 4 }),
                               format: .number.precision(.fractionLength(0)))
                         .frame(width: 48).textFieldStyle(.roundedBorder).multilineTextAlignment(.trailing)
@@ -31,11 +31,11 @@ struct ShapeControls: View {
             }
             if session.shapeKind == .rectangle {
                 HStack(spacing: 6) {
-                    Text("Radius").scrubbable(sensitivity: 1, value: $session.shapeCornerRadius, range: 0...5000)
+                    Text(L10n.text("Radius")).scrubbable(sensitivity: 1, value: $session.shapeCornerRadius, range: 0...5000)
                     Slider(value: Binding(get: { min(200, session.shapeCornerRadius) },
                                           set: { session.shapeCornerRadius = $0.rounded() }), in: 0...200)
                         .frame(width: 100)
-                    TextField("Radius", value: Binding(get: { session.shapeCornerRadius },
+                    TextField(L10n.text("Radius"), value: Binding(get: { session.shapeCornerRadius },
                                                        set: { session.shapeCornerRadius = $0.isFinite ? min(5000, max(0, $0)) : 0 }),
                               format: .number.precision(.fractionLength(0)))
                         .frame(width: 48).textFieldStyle(.roundedBorder).multilineTextAlignment(.trailing)
@@ -43,10 +43,10 @@ struct ShapeControls: View {
                                     change: { session.shapeCornerRadius = min(5000, max(0, CGFloat($0))) })
                         .unitSuffix("px")
                 }
-                .help("Round the rectangle's corners by this many pixels; 0 keeps them square")
+                .help(L10n.text("Round the rectangle's corners by this many pixels; 0 keeps them square"))
             }
             HStack(spacing: 6) {
-                Text("Fill")
+                Text(L10n.text("Fill"))
                 Button { session.openColorPicker(background: false) } label: {
                     let swatch = RoundedRectangle(cornerRadius: 3, style: .continuous)
                     swatch.fill(Color(nsColor: session.foregroundColor.nsColor))
@@ -54,7 +54,7 @@ struct ShapeControls: View {
                         .frame(width: 36, height: 18)
                 }
                 .buttonStyle(.plain)
-                .help("Shapes fill with the foreground color; click to change it")
+                .help(L10n.text("Shapes fill with the foreground color; click to change it"))
             }
             Spacer(minLength: 0)
         }

@@ -19,7 +19,7 @@ struct RawDevelopSheet: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Develop “\(url.lastPathComponent)”").font(.title2.bold())
+            Text(L10n.text("Develop “%@”", String(describing: url.lastPathComponent))).font(.title2.bold())
             ZStack {
                 RoundedRectangle(cornerRadius: 6).fill(Color.black.opacity(0.35))
                 if let preview {
@@ -31,7 +31,7 @@ struct RawDevelopSheet: View {
                     // Import pressed: the full frame takes a second or more to develop.
                     VStack(spacing: 8) {
                         ProgressView().controlSize(.regular)
-                        Text("Importing…").foregroundStyle(.secondary)
+                        Text(L10n.text("Importing…")).foregroundStyle(.secondary)
                     }
                     .padding(16).background(.regularMaterial, in: RoundedRectangle(cornerRadius: 10))
                 } else if working { ProgressView().controlSize(.small) }
@@ -39,31 +39,31 @@ struct RawDevelopSheet: View {
             .frame(width: 560, height: 340)
 
             Group {
-                slider("Exposure", value: $settings.exposure, range: -3...3, unit: " EV", precision: 2)
-                slider("Temperature", value: $settings.temperature, range: 2000...12000, unit: " K", precision: 0)
-                slider("Tint", value: $settings.tint, range: -150...150, unit: "", precision: 0)
-                slider("Boost", value: $settings.boost, range: 0...1, unit: "", precision: 2)
-                slider("Noise Reduction", value: $settings.noiseReduction, range: 0...1, unit: "", precision: 2)
+                slider(L10n.text("Exposure"), value: $settings.exposure, range: -3...3, unit: " EV", precision: 2)
+                slider(L10n.text("Temperature"), value: $settings.temperature, range: 2000...12000, unit: " K", precision: 0)
+                slider(L10n.text("Tint"), value: $settings.tint, range: -150...150, unit: "", precision: 0)
+                slider(L10n.text("Boost"), value: $settings.boost, range: 0...1, unit: "", precision: 2)
+                slider(L10n.text("Noise Reduction"), value: $settings.noiseReduction, range: 0...1, unit: "", precision: 2)
                     .disabled(!settings.supportsNoiseReduction)
-                    .help(settings.supportsNoiseReduction ? "Smooths grain, at the cost of fine detail"
-                                                          : "Not available for this camera")
+                    .help(settings.supportsNoiseReduction ? L10n.text("Smooths grain, at the cost of fine detail")
+                                                          : L10n.text("Not available for this camera"))
                 HStack(spacing: 20) {
-                    Toggle("Lens Correction", isOn: $settings.lensCorrection)
+                    Toggle(L10n.text("Lens Correction"), isOn: $settings.lensCorrection)
                         .disabled(!settings.supportsLensCorrection)
-                        .help(settings.supportsLensCorrection ? "Removes the lens's distortion and vignetting"
-                                                              : "This file has no lens profile")
-                    Toggle("Highlight Recovery", isOn: $settings.highlightRecovery)
+                        .help(settings.supportsLensCorrection ? L10n.text("Removes the lens's distortion and vignetting")
+                                                              : L10n.text("This file has no lens profile"))
+                    Toggle(L10n.text("Highlight Recovery"), isOn: $settings.highlightRecovery)
                         .disabled(!settings.supportsHighlightRecovery)
-                        .help(settings.supportsHighlightRecovery ? "Brings back detail in bright areas the camera partly clipped"
-                                                                 : "Not available for this camera")
+                        .help(settings.supportsHighlightRecovery ? L10n.text("Brings back detail in bright areas the camera partly clipped")
+                                                                 : L10n.text("Not available for this camera"))
                 }
                 .padding(.leading, 120)
 
                 HStack {
-                    Button("Reset") { settings.reset() }.disabled(settings.isAsShot)
+                    Button(L10n.text("Reset")) { settings.reset() }.disabled(settings.isAsShot)
                     Spacer()
-                    Button("Cancel") { session.finishRawDevelop(nil) }.keyboardShortcut(.cancelAction)
-                    Button("Import") { session.finishRawDevelop(settings) }.keyboardShortcut(.defaultAction)
+                    Button(L10n.text("Cancel")) { session.finishRawDevelop(nil) }.keyboardShortcut(.cancelAction)
+                    Button(L10n.text("Import")) { session.finishRawDevelop(settings) }.keyboardShortcut(.defaultAction)
                 }
             }
             .disabled(session.rawImporting)
@@ -93,7 +93,7 @@ struct RawDevelopSheet: View {
     private func slider(_ title: String, value: Binding<Float>, range: ClosedRange<Float>,
                         unit: String, precision: Int) -> some View {
         HStack(spacing: 10) {
-            Text(title).frame(width: 110, alignment: .leading)
+            Text(L10n.text(title)).frame(width: 110, alignment: .leading)
             Slider(value: value, in: range).frame(width: 300)
             Text(String(format: "%.\(precision)f%@", value.wrappedValue, unit))
                 .monospacedDigit().foregroundStyle(.secondary)

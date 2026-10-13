@@ -21,18 +21,18 @@ import Sparkle
         let downloaded = state.stage != .notDownloaded
         let alert = NSAlert()
         alert.icon = NSApp.applicationIconImage
-        alert.messageText = "A new version of \(name) is available!"
+        alert.messageText = L10n.text("A new version of %@ is available!", String(describing: name))
         alert.informativeText = downloaded
-            ? "\(name) \(appcastItem.displayVersionString) is ready to install — you have \(current)."
-            : "\(name) \(appcastItem.displayVersionString) is now available — you have \(current). Would you like to download it now?"
+            ? L10n.text("%@ %@ is ready to install — you have %@.", String(describing: name), String(describing: appcastItem.displayVersionString), String(describing: current))
+            : L10n.text("%@ %@ is now available — you have %@. Would you like to download it now?", String(describing: name), String(describing: appcastItem.displayVersionString), String(describing: current))
         let changes = Self.changes(in: appcastItem)
         if !changes.isEmpty { alert.accessoryView = Self.list(changes) }
-        alert.addButton(withTitle: downloaded ? "Install and Relaunch" : "Install Update")
-        alert.addButton(withTitle: "Remind Me Later")
-        alert.addButton(withTitle: "Skip This Version")
+        alert.addButton(withTitle: downloaded ? L10n.text("Install and Relaunch") : L10n.text("Install Update"))
+        alert.addButton(withTitle: L10n.text("Remind Me Later"))
+        alert.addButton(withTitle: L10n.text("Skip This Version"))
         if let updater, updater.allowsAutomaticUpdates {
             alert.showsSuppressionButton = true
-            alert.suppressionButton?.title = "Automatically download and install updates in the future"
+            alert.suppressionButton?.title = L10n.text("Automatically download and install updates in the future")
             alert.suppressionButton?.state = updater.automaticallyDownloadsUpdates ? .on : .off
         }
         alert.layout()
@@ -91,7 +91,7 @@ import Sparkle
         style.headIndent = 12
         style.paragraphSpacing = 4
         style.tabStops = [NSTextTab(textAlignment: .left, location: 12)]
-        let text = NSMutableAttributedString(string: "What’s new\n", attributes: [
+        let text = NSMutableAttributedString(string: L10n.text("What’s new\n"), attributes: [
             .font: NSFont.systemFont(ofSize: NSFont.smallSystemFontSize, weight: .semibold),
             .foregroundColor: NSColor.labelColor, .paragraphStyle: style,
         ])

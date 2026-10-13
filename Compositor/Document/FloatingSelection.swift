@@ -36,18 +36,18 @@ extension EditorSession {
         } catch { brushError = error.localizedDescription; return }
         let before = document, beforeActive = activeLayerID
         // Outer edit: closed by commitTransform (merge) or cancelTransform (restore).
-        beginEdit("Transform Selection")
+        beginEdit(L10n.text("Transform Selection"))
         await clearSelectedPixels()
         let asset = lifted.image.bitsPerComponent > 8
-            ? try? DeepLayer.asset(lifted.image, name: "Floating Selection")
-            : (try? PixelInvert.thumbnail(of: lifted.image)).map { ImportedImage(image: lifted.image, thumbnail: $0, name: "Floating Selection") }
+            ? try? DeepLayer.asset(lifted.image, name: L10n.text("Floating Selection"))
+            : (try? PixelInvert.thumbnail(of: lifted.image)).map { ImportedImage(image: lifted.image, thumbnail: $0, name: L10n.text("Floating Selection")) }
         guard let index = self.document?.layers.firstIndex(where: { $0.id == source.id }), let asset else {
             self.document = before
             endEdit()
             return
         }
         var floating = ImageLayer(asset: asset, origin: lifted.region.origin)
-        floating.name = "Floating Selection"
+        floating.name = L10n.text("Floating Selection")
         floating.parentID = source.parentID
         floating.opacity = source.opacity
         floating.blendMode = source.blendMode

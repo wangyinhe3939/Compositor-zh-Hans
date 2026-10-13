@@ -27,7 +27,7 @@ struct ProjectTabOverflow: Equatable {
 
 /// "N more tabs", singular for one.
 func projectTabOverflowLabel(for hiddenCount: Int) -> String {
-    hiddenCount == 1 ? "1 more tab" : "\(hiddenCount) more tabs"
+    hiddenCount == 1 ? L10n.text("1 more tab") : L10n.text("%@ more tabs", String(describing: hiddenCount))
 }
 
 /// Lays out the strip left to right: everything shows when it all fits. Otherwise tabs are dropped from the
