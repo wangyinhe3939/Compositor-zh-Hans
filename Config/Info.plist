@@ -56,12 +56,10 @@
 	</array>
 	<key>SUEnableInstallerLauncherService</key>
 	<true/>
-	<key>SUFeedURL</key>
-	<string>https://raw.githubusercontent.com/robbietilton/Compositor/main/appcast.xml</string>
-	<key>SUPublicEDKey</key>
-	<string>KZvD724t8QpzTR4OGrHrsCWt538TJ/g/qrTZii+o214=</string>
+	<key>CompositorReleasePage</key>
+	<string>https://github.com/wangyinhe3939/Compositor-zh-Hans/releases/latest</string>
 	<key>SUEnableAutomaticChecks</key>
-	<true/>
+	<false/>
 	<key>UTExportedTypeDeclarations</key>
 	<array>
 		<dict>

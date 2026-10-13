@@ -6,6 +6,19 @@ final class CompositorApplicationDelegate: NSObject, NSApplicationDelegate {
     var session: EditorSession { workspace.current.session }
     var projects: ProjectController { workspace.current.controller }
     var showEditor: (() -> Void)?
+    private var releasePage: URL? {
+        guard let address = Bundle.main.object(forInfoDictionaryKey: "CompositorReleasePage") as? String else { return nil }
+        return URL(string: address)
+    }
+
+    func checkForUpdates() {
+        if let releasePage {
+            NSWorkspace.shared.open(releasePage)
+        } else {
+            updater.checkForUpdates()
+        }
+    }
+
     /// Checks the update feed and installs new versions (Sparkle), offering each one with what's new listed in it.
     /// Started only after launch: its first-run prompt, shown during launch, kept the editor window from ever opening.
     private let updateDriver = UpdateDriver()
@@ -80,6 +93,8 @@ final class CompositorApplicationDelegate: NSObject, NSApplicationDelegate {
             guard let menu = note.object as? NSMenu, let index = note.userInfo?["NSMenuItemIndex"] as? Int else { return }
             MainActor.assumeIsolated { Self.removeIfSystemExtra(at: index, in: menu) }
         }
+        // Community downloads use the release page; never start an installer from inherited update preferences.
+        guard releasePage == nil else { return }
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) { [weak self] in
             do { try self?.updater.start() } catch { NSLog("Sparkle didn't start: \(error)") }
             #if DEBUG

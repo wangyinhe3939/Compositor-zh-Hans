@@ -10,7 +10,15 @@ Compositor 是一款面向图像合成与照片后期的 macOS 原生图像编�
 
 本次汉化包含 **1,235 条中文资源**，保留英文回退与原有编辑工作流。适合希望用中文进行图层合成、图片修饰和照片调色的 Apple 芯片 Mac 用户。
 
-> 本项目是社区汉化分支，非原作者官方中文发行版。保留原项目版权与 MIT 许可。当前公开交付为源码、中文说明和宣传素材，尚未提供经过 Developer ID 签名及 Apple 公证的汉化安装包。
+> 本项目是社区汉化分支，非原作者官方中文发行版。保留原项目版权与 MIT 许可。安装包使用 ad-hoc 签名，未经过 Developer ID 签名或 Apple 公证；首次打开请参照安装说明。
+
+## 下载安装
+
+**[下载 DMG 安装包](https://github.com/wangyinhe3939/Compositor-zh-Hans/releases/download/v1.5-zh-Hans.1/Compositor-1.5-zh-Hans.1-arm64.dmg)** · [ZIP 备用下载](https://github.com/wangyinhe3939/Compositor-zh-Hans/releases/download/v1.5-zh-Hans.1/Compositor-1.5-zh-Hans.1-arm64.zip) · [最新版本与校验文件](https://github.com/wangyinhe3939/Compositor-zh-Hans/releases/latest)
+
+适用于 **macOS 26.0 及以上、Apple 芯片 Mac**，无需安装 Xcode。打开 DMG，把 `Compositor.app` 拖入 Applications（应用程序）即可安装。已有同名 App 时请先退出，再按需替换。
+
+本包未公证。确认来源并信任项目后，可按 [完整安装说明](docs/安装说明.md) 在“系统设置 → 隐私与安全性”中选择“仍要打开”。App 跟随系统语言，也可在系统设置中单独设为简体中文。
 
 ## 真实界面
 
@@ -72,7 +80,9 @@ open Compositor.xcodeproj
 xcodebuild -project Compositor.xcodeproj -scheme Compositor -configuration Debug -destination 'platform=macOS,arch=arm64' -derivedDataPath .build_tmp/DerivedData -clonedSourcePackagesDirPath .build_tmp/SourcePackages -packageCachePath .build_tmp/PackageCache -onlyUsePackageVersionsFromResolvedFile CODE_SIGNING_ALLOWED=NO COMPILER_INDEX_STORE_ENABLE=NO build
 ```
 
-命令行构建产物位于 `.build_tmp/DerivedData/Build/Products/Debug/Compositor.app`。此命令仅验证编译，不保证产物可直接启动。实际运行请使用 Xcode 配置签名后 Run；公开分发还需完成发行签名、公证与验证。
+命令行构建产物位于 `.build_tmp/DerivedData/Build/Products/Debug/Compositor.app`。此命令仅验证编译，不保证产物可直接启动。实际开发运行请使用 Xcode 配置签名后 Run。
+
+社区安装包使用 `scripts/build-community.sh` 生成优化的 Release 构建，关闭调试动态库与覆盖率记录，并映射构建路径。脚本只负责构建；发布前还需移除本地链接符号、保留依赖许可证、签名和打包验证。普通用户可直接使用上方安装包。
 
 ### 选择中文
 
@@ -80,13 +90,15 @@ xcodebuild -project Compositor.xcodeproj -scheme Compositor -configuration Debug
 
 ### 更新来源
 
-**当前源码的 Sparkle 更新源仍指向上游原版，且保留上游的自动检查设置。安装上游更新可能覆盖汉化。** 汉化更新请以本仓库为准，下载源码更新后重新构建；不要把内置“检查更新”当作本分支的中文更新服务。
+本分支已停用上游 Sparkle 自动更新器并移除上游更新源。“检查更新…”会打开 [汉化版 Releases](https://github.com/wangyinhe3939/Compositor-zh-Hans/releases/latest)，下载新包后手动替换 App。
 
-原项目网站和 Homebrew cask 分发的是上游版本。仓库保留的 `scripts/release.sh` 与 `scripts/publish.sh` 属于上游发行流程，其中发布脚本默认指向上游仓库。维护者建立独立发行流程前，请勿直接用它们发布此汉化分支。
+原项目网站和 Homebrew cask 分发的是上游版本。仓库保留的 `scripts/release.sh` 与 `scripts/publish.sh` 属于上游发行流程，其中发布脚本默认指向上游仓库；请勿用它们发布此汉化分支。
 
 ## 验证范围
 
 已完成中文资源解析、英文回退、格式占位符与源码构建检查；本地实际查看了中文主菜单、导出、图像／画布尺寸、快捷键、Camera Raw 初始面板，以及涂抹／液化撤销名称。已确认画布尺寸说明的中文换行修正。
+
+本次安装包另已完成 Release 构建、签名完整性与权限核对、DMG 校验、ZIP 解包启动及中文窗口检查。两种归档中的 App 文件与符号链接逐项一致，并附带 SHA-256 校验文件。
 
 尚未完成所有功能的完整回归、多设备测试和所有系统语言组合检查。PSD 默认图层名称的修正通过源码与构建核验，未单独完成真实 PSD 导入验收。GitHub Actions 结果请以仓库的实际运行记录为准。
 

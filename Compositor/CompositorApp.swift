@@ -100,7 +100,7 @@ struct CompositorApp: App {
                 // Grouped: a commands builder takes at most ten items.
                 Group {
                     CommandGroup(after: .appInfo) {
-                        Button(L10n.text("Check for Updates…")) { applicationDelegate.updater.checkForUpdates() }
+                        Button(L10n.text("Check for Updates…")) { applicationDelegate.checkForUpdates() }
                     }
                     CommandGroup(after: .toolbar) {
                         Button(L10n.text("Search Commands…")) {
